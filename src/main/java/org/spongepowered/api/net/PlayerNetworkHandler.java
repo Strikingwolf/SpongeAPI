@@ -26,7 +26,7 @@ package org.spongepowered.api.net;
 
 import org.spongepowered.api.entity.player.Player;
 
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 /**
  * Represents a connection of a client to the server.
@@ -34,19 +34,18 @@ import java.net.InetAddress;
 public interface PlayerNetworkHandler {
 
     /**
-     * Gets the associated Player that this player connection is associated
-     * with.
+     * Gets the associated {@link Player} for this connection.
      *
      * @return The associated player
      */
     Player getPlayer();
 
     /**
-     * Gets the {@link InetAddress} of this connection.
+     * Gets the {@link InetSocketAddress} of this connection.
      *
      * @return The address
      */
-    InetAddress getAddress();
+    InetSocketAddress getAddress();
 
     /**
      * Gets the host name the connection is connecting to the server with.
@@ -57,7 +56,7 @@ public interface PlayerNetworkHandler {
      *
      * @return The host name
      */
-    String getHostname();
+    InetSocketAddress getVirtualHost();
 
     /**
      * Gets the connection ping. This is constantly calculated by the server.
@@ -65,6 +64,16 @@ public interface PlayerNetworkHandler {
      * @return The ping
      */
     int getPing();
+
+    /**
+     * Sends a custom payload over the player connection backed by a
+     * {@link ChannelStream}.
+     *
+     * @param plugin The instance of the plugin
+     * @param channel The channel to send to
+     * @param dataStream The data
+     */
+    void sendCustomPayload(Object plugin, String channel, ChannelStream dataStream);
 
     /**
      * Sends a custom payload to the player connection.
