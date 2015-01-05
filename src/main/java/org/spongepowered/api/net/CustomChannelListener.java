@@ -24,32 +24,24 @@
  */
 package org.spongepowered.api.net;
 
-import java.util.List;
-
 /**
- * A registrar handling custom payloads via channels to and from
- * {@link PlayerNetworkHandler}s and the server.
+ * Represents a listener for data being sent by {@link PlayerNetworkHandler}s
+ * over specific channels.
  */
-public interface CustomChannelRegistrar {
+public interface CustomChannelListener {
 
     /**
-     * Registers the given channel to the plugin.
+     * Handles the given {@link ChannelStream} data sent by the
+     * {@link PlayerNetworkHandler} over the prescribed channel.
      *
-     * @param plugin The plugin registering the channel
-     * @param listener The listener that will listen for
-     * @param channel The channel to register
+     * <p>The given channel stream passed in to the listener is always
+     * a copy of the original data received by the server to better
+     * handle concurrency across listeners.</p>
+     *
+     * @param client The client sending the data
+     * @param channel The channel being used
+     * @param data The actual raw data
      */
-    void registerChannel(Object plugin, CustomChannelListener listener, String channel);
-
-    /**
-     * Gets the list of registered channels.
-     *
-     * <p>Channel registration is a global registration, all clients
-     * will automatically be registered with the given channels on the
-     * server and vice versa.</p>
-     *
-     * @return A copy of the list of channels
-     */
-    List<String> getRegisteredChannels();
+    void handlePayload(PlayerNetworkHandler client, String channel, ChannelStream data);
 
 }
